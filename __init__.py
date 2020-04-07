@@ -72,7 +72,7 @@ class HandleImport(Operator, ImportHelper):
     
     def invoke(self, context, event):
         self.filepath = together_models
-        wm = context.window_manager.fileselect_add(self)
+        context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
 
 # export
@@ -97,5 +97,5 @@ class HandleExport(Operator, ExportHelper):
     
     def invoke(self, context, event):
         self.filepath = together_models + "_Idle.b3d"
-        wm = context.window_manager.fileselect_add(self)
+        context.window_manager.fileselect_add(self)
         return {'RUNNING_MODAL'}
