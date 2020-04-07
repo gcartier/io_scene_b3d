@@ -58,7 +58,11 @@ def export_b3d(operator, b3d):
         uv_loops = mesh.uv_layers.active.data
         for poly in mesh.polygons:
             v1, v2, v3 = poly.vertices
-            mat = poly.material_index
+            # hack around poly.material_index being 0 even when no material
+            if len(object.material_slots) == 0:
+                mat = -1
+            else:
+                mat = poly.material_index
             uv1 = uv_loops[poly.loop_start].uv
             uv2 = uv_loops[poly.loop_start + 1].uv
             uv3 = uv_loops[poly.loop_start + 2].uv
@@ -67,30 +71,25 @@ def export_b3d(operator, b3d):
         
         # materials
         format("\nMATERIALS\n")
-        if len(object.material_slots) == 0:
-            # hack around poly.material_index above being 0 even when no material
-            format("1\n")
-            format('"Material", ""\n')
-        else:
-            format("%i\n" % len(object.material_slots))
-            for material_slot in object.material_slots:
-                material = material_slot.material
-                if not material.node_tree:
+        format("%i\n" % len(object.material_slots))
+        for material_slot in object.material_slots:
+            material = material_slot.material
+            if not material.node_tree:
+                format('"%s", ""\n' % (material_slot.name))
+            else:
+                def find_tex_image_node():
+                    for node in material.node_tree.nodes:
+                        if node.type == 'TEX_IMAGE':
+                            return node
+                    return None
+                
+                node = find_tex_image_node()
+                if not node:
                     format('"%s", ""\n' % (material_slot.name))
                 else:
-                    def find_tex_image_node():
-                        for node in material.node_tree.nodes:
-                            if node.type == 'TEX_IMAGE':
-                                return node
-                        return None
-                    
-                    node = find_tex_image_node()
-                    if not node:
-                        format('"%s", ""\n' % (material_slot.name))
-                    else:
-                        # remove starting //
-                        filename = os.path.split(node.image.filepath)[1]
-                        format('"%s", "%s"\n' % (material_slot.name, filename))
+                    # remove starting //
+                    filename = os.path.split(node.image.filepath)[1]
+                    format('"%s", "%s"\n' % (material_slot.name, filename))
         
         # bones
         format("\nBONES\n")
