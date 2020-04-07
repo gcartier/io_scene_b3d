@@ -67,25 +67,30 @@ def export_b3d(operator, b3d):
         
         # materials
         format("\nMATERIALS\n")
-        format("%i\n" % len(object.material_slots))
-        for material_slot in object.material_slots:
-            material = material_slot.material
-            if not material.node_tree:
-                format('"%s", ""\n' % (material_slot.name))
-            else:
-                def find_tex_image_node():
-                    for node in material.node_tree.nodes:
-                        if node.type == 'TEX_IMAGE':
-                            return node
-                    return None
-                
-                node = find_tex_image_node()
-                if not node:
+        if len(object.material_slots) == 0:
+            # hack around poly.material_index above being 0 even when no material
+            format("1\n")
+            format('"Material", ""\n')
+        else:
+            format("%i\n" % len(object.material_slots))
+            for material_slot in object.material_slots:
+                material = material_slot.material
+                if not material.node_tree:
                     format('"%s", ""\n' % (material_slot.name))
                 else:
-                    # remove starting //
-                    filename = os.path.split(node.image.filepath)[1]
-                    format('"%s", "%s"\n' % (material_slot.name, filename))
+                    def find_tex_image_node():
+                        for node in material.node_tree.nodes:
+                            if node.type == 'TEX_IMAGE':
+                                return node
+                        return None
+                    
+                    node = find_tex_image_node()
+                    if not node:
+                        format('"%s", ""\n' % (material_slot.name))
+                    else:
+                        # remove starting //
+                        filename = os.path.split(node.image.filepath)[1]
+                        format('"%s", "%s"\n' % (material_slot.name, filename))
         
         # bones
         format("\nBONES\n")
