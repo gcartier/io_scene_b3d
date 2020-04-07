@@ -212,4 +212,4 @@ def export_b3d(operator, b3d):
                     format("%.3f, %.6f, %.6f, %.6f\n" % (time, rot[0], rot[1], rot[2]))
         
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
-        print("exported", "in", elapsed_time)
+        print("Exported", "in", elapsed_time)

@@ -191,4 +191,4 @@ def import_b3d(operator, b3d):
         bpy.ops.object.mode_set(mode = 'OBJECT')
         
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
-        print("imported", "in", elapsed_time)
+        print("Imported", "in", elapsed_time)
