@@ -10,7 +10,6 @@ def export_b3d(operator, b3d):
     with open(b3d, "w", encoding="utf-8", newline="\n") as file:
         def format(str):
             file.write(str)
-            # sys.stdout.write(str)
         
         start_time = datetime.datetime.now()
         
