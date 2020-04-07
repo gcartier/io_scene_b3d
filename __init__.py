@@ -99,6 +99,9 @@ class HandleExport(Operator, ExportHelper):
         if not bpy.context.object:
             self.report({'ERROR'}, 'No active object to export')
             return {'CANCELLED'}
+        elif bpy.context.object.type != 'MESH':
+            self.report({'ERROR'}, 'Only mesh objects can be exported')
+            return {'CANCELLED'}
         else:
             self.filepath = together_models + "_Idle.b3d"
             context.window_manager.fileselect_add(self)
