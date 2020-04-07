@@ -6,7 +6,7 @@ import math
 import mathutils
 import datetime
 
-def export_b3d(b3d):
+def export_b3d(operator, b3d):
     with open(b3d, "w", encoding="utf-8", newline="\n") as file:
         def format(str):
             file.write(str)

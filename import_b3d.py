@@ -6,7 +6,7 @@ import math
 import mathutils
 import datetime
 
-def import_b3d(b3d):
+def import_b3d(operator, b3d):
     dirname = os.path.dirname(b3d)
     with open(b3d, "r", encoding="utf-8", newline="\n") as file:
         def rline():

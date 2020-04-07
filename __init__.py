@@ -67,7 +67,7 @@ class HandleImport(Operator, ImportHelper):
         self.layout.operator(HandleImport.bl_idname, text="B3D Format (.b3d)")
 
     def execute(self, context):
-        import_b3d(self.filepath)
+        import_b3d(self, self.filepath)
         return {'FINISHED'}
     
     def invoke(self, context, event):
@@ -92,10 +92,14 @@ class HandleExport(Operator, ExportHelper):
         opts.filepath = default_path
 
     def execute(self, context):
-        export_b3d(self.filepath)
+        export_b3d(self, self.filepath)
         return {'FINISHED'}
     
     def invoke(self, context, event):
-        self.filepath = together_models + "_Idle.b3d"
-        context.window_manager.fileselect_add(self)
-        return {'RUNNING_MODAL'}
+        if not bpy.context.object:
+            self.report({'ERROR'}, 'No active object to export')
+            return {'CANCELLED'}
+        else:
+            self.filepath = together_models + "_Idle.b3d"
+            context.window_manager.fileselect_add(self)
+            return {'RUNNING_MODAL'}
