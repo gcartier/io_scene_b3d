@@ -142,53 +142,53 @@ def import_b3d(operator, b3d):
                     if vert_bone == n:
                         vertex_group.add((i,), 1., 'ADD')
             bpy.ops.object.mode_set(mode = 'OBJECT')
-
-        # animations
-        rline()
-        rline()
-        num_animations = rliteral()
-        bpy.ops.object.mode_set(mode = 'POSE')
-        for n in range(num_animations):
-            animation_info = rliteral()
-            animation_name = animation_info
-            action = bpy.data.actions.new(animation_name)
-            armature_object.animation_data_create()
-            armature_object.animation_data.action = action
-            for i in range(num_bones):
-                bone_name = rliteral()
-                pose_bone = armature_object.pose.bones.get(bone_name)
-                pose_bone.rotation_mode = 'XZY'
-                num_locations = rliteral()
-                if num_locations > 0:
-                    data_path = pose_bone.path_from_id('location')
-                    fcurve_location_x = action.fcurves.new(data_path, index=0)
-                    fcurve_location_y = action.fcurves.new(data_path, index=1)
-                    fcurve_location_z = action.fcurves.new(data_path, index=2)
-                    for j in range(num_locations):
-                        keyframe_info = rliteral()
-                        frame = keyframe_info[0]
-                        x = keyframe_info[1]
-                        y = keyframe_info[2]
-                        z = keyframe_info[3]
-                        fcurve_location_x.keyframe_points.insert(frame, x)
-                        fcurve_location_y.keyframe_points.insert(frame, y)
-                        fcurve_location_z.keyframe_points.insert(frame, z)
-                num_rotations = rliteral()
-                if num_rotations > 0:
-                    data_path = pose_bone.path_from_id('rotation_euler')
-                    fcurve_rotation_euler_x = action.fcurves.new(data_path, index=0)
-                    fcurve_rotation_euler_y = action.fcurves.new(data_path, index=1)
-                    fcurve_rotation_euler_z = action.fcurves.new(data_path, index=2)
-                    for j in range(num_rotations):
-                        keyframe_info = rliteral()
-                        frame = keyframe_info[0]
-                        x = keyframe_info[1]
-                        y = keyframe_info[2]
-                        z = keyframe_info[3]
-                        fcurve_rotation_euler_x.keyframe_points.insert(frame, x)
-                        fcurve_rotation_euler_y.keyframe_points.insert(frame, y)
-                        fcurve_rotation_euler_z.keyframe_points.insert(frame, z)
-        bpy.ops.object.mode_set(mode = 'OBJECT')
+    
+            # animations
+            rline()
+            rline()
+            num_animations = rliteral()
+            bpy.ops.object.mode_set(mode = 'POSE')
+            for n in range(num_animations):
+                animation_info = rliteral()
+                animation_name = animation_info
+                action = bpy.data.actions.new(animation_name)
+                armature_object.animation_data_create()
+                armature_object.animation_data.action = action
+                for i in range(num_bones):
+                    bone_name = rliteral()
+                    pose_bone = armature_object.pose.bones.get(bone_name)
+                    pose_bone.rotation_mode = 'XZY'
+                    num_locations = rliteral()
+                    if num_locations > 0:
+                        data_path = pose_bone.path_from_id('location')
+                        fcurve_location_x = action.fcurves.new(data_path, index=0)
+                        fcurve_location_y = action.fcurves.new(data_path, index=1)
+                        fcurve_location_z = action.fcurves.new(data_path, index=2)
+                        for j in range(num_locations):
+                            keyframe_info = rliteral()
+                            frame = keyframe_info[0]
+                            x = keyframe_info[1]
+                            y = keyframe_info[2]
+                            z = keyframe_info[3]
+                            fcurve_location_x.keyframe_points.insert(frame, x)
+                            fcurve_location_y.keyframe_points.insert(frame, y)
+                            fcurve_location_z.keyframe_points.insert(frame, z)
+                    num_rotations = rliteral()
+                    if num_rotations > 0:
+                        data_path = pose_bone.path_from_id('rotation_euler')
+                        fcurve_rotation_euler_x = action.fcurves.new(data_path, index=0)
+                        fcurve_rotation_euler_y = action.fcurves.new(data_path, index=1)
+                        fcurve_rotation_euler_z = action.fcurves.new(data_path, index=2)
+                        for j in range(num_rotations):
+                            keyframe_info = rliteral()
+                            frame = keyframe_info[0]
+                            x = keyframe_info[1]
+                            y = keyframe_info[2]
+                            z = keyframe_info[3]
+                            fcurve_rotation_euler_x.keyframe_points.insert(frame, x)
+                            fcurve_rotation_euler_y.keyframe_points.insert(frame, y)
+                            fcurve_rotation_euler_z.keyframe_points.insert(frame, z)
+            bpy.ops.object.mode_set(mode = 'OBJECT')
         
         # report
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
