@@ -190,5 +190,6 @@ def import_b3d(operator, b3d):
                         fcurve_rotation_euler_z.keyframe_points.insert(frame, z)
         bpy.ops.object.mode_set(mode = 'OBJECT')
         
+        # report
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
         print("Imported", "in", elapsed_time)

@@ -31,7 +31,7 @@ def export_b3d(operator, b3d):
         format("OBJECT\n")
         format('"%s", %.3f, %.3f, %.3f, %.3f\n' % (object.name, scene.render.fps, scene.frame_start, scene.frame_end, scene.frame_current))
         
-        mesh = object.data
+        mesh = object.data.copy()
         mesh_triangulate(mesh)
         
         # vertices
@@ -211,5 +211,9 @@ def export_b3d(operator, b3d):
                     rot = euler_rotations[time]
                     format("%.3f, %.6f, %.6f, %.6f\n" % (time, rot[0], rot[1], rot[2]))
         
+        # cleanup
+        context.blend_data.meshes.remove(mesh)
+        
+        # report
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
         print("Exported", "in", elapsed_time)
