@@ -74,10 +74,10 @@ def import_b3d(operator, b3d):
         for n in range(len(mesh.polygons)):
             poly = mesh.polygons[n]
             tri_info = triangles_info[n]
-            poly.material_index = tri_info[6]
-            uv_loops[poly.loop_start].uv = (tri_info[7], 1.0 - tri_info[8])
-            uv_loops[poly.loop_start + 1].uv = (tri_info[9], 1.0 - tri_info[10])
-            uv_loops[poly.loop_start + 2].uv = (tri_info[11], 1.0 - tri_info[12])
+            poly.material_index = tri_info[3]
+            uv_loops[poly.loop_start].uv = (tri_info[4], 1.0 - tri_info[5])
+            uv_loops[poly.loop_start + 1].uv = (tri_info[6], 1.0 - tri_info[7])
+            uv_loops[poly.loop_start + 2].uv = (tri_info[8], 1.0 - tri_info[9])
         
         col.objects.link(obj)
         context.view_layer.objects.active = obj
@@ -138,7 +138,7 @@ def import_b3d(operator, b3d):
                 vertex_group = obj.vertex_groups.new(name=bone_name)
                 for i in range(num_vertices):
                     vert_info = vertices_info[i]
-                    vert_bone = vert_info[3]
+                    vert_bone = vert_info[6]
                     if vert_bone == n:
                         vertex_group.add((i,), 1., 'ADD')
             bpy.ops.object.mode_set(mode = 'OBJECT')
