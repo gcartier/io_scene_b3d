@@ -162,9 +162,6 @@ def export_b3d(operator, b3d):
                 for fcurve in action.fcurves:
                     data_path = fcurve.data_path
                     boneexport = find_boneexport(data_path)
-                    if boneexport is None:
-                        print("***** FCURVE NOT FOUND", data_path)
-                        return
                     dict = None
                     if data_path.endswith("location"):
                         dict = boneexport.locations
