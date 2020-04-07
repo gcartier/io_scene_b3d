@@ -47,11 +47,12 @@ def export_b3d(b3d):
                         group = groupelem.group
                         weight = groupelem.weight
                 co = matrix_basis @ vert.co
+                normal = vert.normal
                 index = -1
                 if group != -1:
                     name = object.vertex_groups[group].name
                     index = armature.data.bones.find(name)
-                format("%.6f, %.6f, %.6f, %i\n" % (co.x, co.y, co.z, index))
+                format("%.6f, %.6f, %.6f, %.6f, %.6f, %.6f, %i\n" % (co.x, co.y, co.z, normal.x, normal.y, normal.z, index))
             
             # triangles
             format("\nTRIANGLES\n")
@@ -59,13 +60,12 @@ def export_b3d(b3d):
             uv_loops = mesh.uv_layers.active.data
             for poly in mesh.polygons:
                 v1, v2, v3 = poly.vertices
-                n = poly.normal
                 mat = poly.material_index
                 uv1 = uv_loops[poly.loop_start].uv
                 uv2 = uv_loops[poly.loop_start + 1].uv
                 uv3 = uv_loops[poly.loop_start + 2].uv
-                format("%i, %i, %i, %.6f, %.6f, %.6f, %i, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f\n" %
-                    (v1, v2, v3, n.x, n.y, n.z, mat, uv1[0], 1.0 - uv1[1], uv2[0], 1.0 - uv2[1], uv3[0], 1.0 - uv3[1]))
+                format("%i, %i, %i, %i, %.6f, %.6f, %.6f, %.6f, %.6f, %.6f\n" %
+                    (v1, v2, v3, mat, uv1[0], 1.0 - uv1[1], uv2[0], 1.0 - uv2[1], uv3[0], 1.0 - uv3[1]))
             
             # materials
             format("\nMATERIALS\n")
