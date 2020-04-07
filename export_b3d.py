@@ -87,7 +87,13 @@ def export_b3d(operator, b3d):
                     filename = os.path.split(node.image.filepath)[1]
                     format('"%s", "%s"\n' % (material_slot.name, filename))
         
-        if armature and armature.type == 'ARMATURE':
+        # bones
+        format("\nBONES\n")
+        if not armature or armature.type != 'ARMATURE':
+            format("0\n")
+            format("\nANIMATIONS\n")
+            format("0\n")
+        else:
             class BoneExport:
                 def __init__(self, prefix, bone):
                     self.prefix = prefix
@@ -119,7 +125,6 @@ def export_b3d(operator, b3d):
                         return boneexport
                 return None
             
-            # bones
             def compute_matrix(bone):
                 parent_bone = bone.parent
                 if not parent_bone:
@@ -128,7 +133,6 @@ def export_b3d(operator, b3d):
                 else:
                     return parent_bone.matrix_local.inverted() @ bone.matrix_local
             
-            format("\nBONES\n")
             boneexports = collect_boneexports()
             format("%i\n" % len(boneexports))
             for boneexport in boneexports:
@@ -144,19 +148,10 @@ def export_b3d(operator, b3d):
             
             # animations
             format("\nANIMATIONS\n")
-            action = bpy.data.actions.get('ArmatureAction')
-            if action is None:
-                action = bpy.data.actions.get('Idle')
-            if action is None:
-                action = bpy.data.actions.get('_Idle.ms3d.act')
-            if action is None:
-                action = bpy.data.actions.get('Death.ms3d.act')
-            if action is None:
-                print("***** NO ACTION FOUND")
-                return
-            if action is None:
+            if not armature or not armature.animation_data or not armature.animation_data.action:
                 format("0\n")
             else:
+                action = armature.animation_data.action
                 format("1\n")
                 format('"%s"\n' % action.name)
                 for fcurve in action.fcurves:
