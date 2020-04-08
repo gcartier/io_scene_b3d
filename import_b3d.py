@@ -96,8 +96,8 @@ def import_b3d(operator, b3d):
             
             mat_links.new(teximg.outputs['Color'], principled.inputs['Base Color'])
             
-            bpy.ops.object.material_slot_add()
-            obj.material_slots[n].material = mat
+            mesh.materials.append(mat)
+            obj.material_slots[-1].material = mat
         
         # bones
         rline()
