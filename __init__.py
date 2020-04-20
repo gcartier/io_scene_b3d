@@ -9,6 +9,7 @@ bl_info = {
 }
 
 import bpy
+import os
 
 from bpy.utils import (
     register_class,
@@ -33,7 +34,7 @@ from io_scene_b3d.export_b3d import (
     export_b3d,
     )
 
-together_models = "/Users/cartier/Documents/Together/Devel/assets/model/"
+together_models =  os.path.expanduser("~/Documents/Together/Devel/assets/model/")
 
 # register
 def register():
