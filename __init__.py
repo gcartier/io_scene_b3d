@@ -37,16 +37,16 @@ together_models = "/Users/cartier/Documents/Together/Devel/assets/model/"
 
 # register
 def register():
-    class_list = ( HandleImport, HandleExport )
-    for c in class_list:
+    classes = ( HandleImport, HandleExport )
+    for c in classes:
         bpy.utils.register_class(c)
 
     bpy.types.TOPBAR_MT_file_import.append(HandleImport.menu_func)
     bpy.types.TOPBAR_MT_file_export.append(HandleExport.menu_func)
 
 def unregister():
-    class_list = ( HandleImport, HandleExport )
-    for c in reversed(class_list):
+    classes = ( HandleImport, HandleExport )
+    for c in reversed(classes):
         bpy.utils.unregister_class(c)
 
     bpy.types.TOPBAR_MT_file_import.remove(HandleImport.menu_func)
