@@ -104,6 +104,11 @@ class HandleExport(Operator, ExportHelper):
             self.report({'ERROR'}, 'Only mesh objects can be exported')
             return {'CANCELLED'}
         else:
-            self.filepath = together_models + "_Idle.b3d"
+            object_name = bpy.context.object.name
+            object_base = os.path.splitext(object_name)[0]
+            dirpath = together_models + object_base
+            if not os.path.exists(dirpath):
+                os.makedirs(dirpath)
+            self.filepath = dirpath + "/_Idle.b3d"
             context.window_manager.fileselect_add(self)
             return {'RUNNING_MODAL'}

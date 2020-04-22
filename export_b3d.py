@@ -28,7 +28,9 @@ def export_b3d(operator, b3d):
         
         # object
         format("OBJECT\n")
-        format('"%s", %.3f, %.3f, %.3f, %.3f\n' % (object.name, scene.render.fps, scene.frame_start, scene.frame_end, scene.frame_current))
+        object_name = object.name
+        object_base = os.path.splitext(object_name)[0]
+        format('"%s", %.3f, %.3f, %.3f, %.3f\n' % (object_base, scene.render.fps, scene.frame_start, scene.frame_end, scene.frame_current))
         
         mesh = object.data.copy()
         mesh_triangulate(mesh)
