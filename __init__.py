@@ -34,7 +34,10 @@ from io_scene_b3d.export_b3d import (
     export_b3d,
     )
 
-together_models =  os.path.expanduser("~/Documents/Together/devel/assets/model/")
+if os.name == 'nt':
+    together_models = os.path.join(os.environ['USERPROFILE'], "Documents/Together/test/assets/model/")
+else:
+    together_models =  os.path.expanduser("~/Documents/Together/test/assets/model/")
 
 # register
 def register():
