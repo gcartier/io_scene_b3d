@@ -17,22 +17,35 @@ def export_b3d(operator, b3d):
         scene = context.scene
         object = context.object
         armature = object.parent
+    
+        def is_object_instance_from_selected(object_instance):
+            if object_instance.parent:
+                return object_instance.parent.original.select_get()
+            else:
+                return object_instance.object.original.select_get()
         
-        def mesh_triangulate(me):
+        def selected_object_instance():
+            depsgraph = context.evaluated_depsgraph_get()
+            for object_instance in depsgraph.object_instances:
+                if is_object_instance_from_selected(object_instance):
+                    return object_instance
+        
+        def mesh_triangulate(mesh):
             import bmesh
             bm = bmesh.new()
-            bm.from_mesh(me)
+            bm.from_mesh(mesh)
             bmesh.ops.triangulate(bm, faces=bm.faces)
-            bm.to_mesh(me)
+            bm.to_mesh(mesh)
             bm.free()
-        
+
         # object
         format("OBJECT\n")
         object_name = object.name
         object_base = os.path.splitext(object_name)[0]
         format('"%s", %.3f, %.3f, %.3f, %.3f\n' % (object_base, scene.render.fps, scene.frame_start, scene.frame_end, scene.frame_current))
         
-        mesh = object.data.copy()
+        object_instance = selected_object_instance()
+        mesh = object_instance.object.to_mesh()
         mesh_triangulate(mesh)
         
         # vertices
@@ -209,7 +222,8 @@ def export_b3d(operator, b3d):
                     format("%.3f, %.6f, %.6f, %.6f\n" % (time, rot[0], rot[1], rot[2]))
         
         # cleanup
-        context.blend_data.meshes.remove(mesh)
+        # this crashes blender
+        # object_instance.object.to_mesh_clear()
         
         # report
         elapsed_time = (datetime.datetime.now() - start_time).total_seconds()
